@@ -15,7 +15,7 @@ struct Process
 {
     int pid;
     int burstTime;
-    int arrivalTime;
+    int arrivalTime;  
     int priority;
     int wt;  // Process waiting time
     int rbt; // Process remaining time
