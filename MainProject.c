@@ -64,4 +64,62 @@ int main(int argc, char **argv)
     return 0;
 }
 
-// App templates
+// App templatesstring 
+
+string mainMenuTemplate()
+{
+    string str = "CPU SCHEDULER SIMULATOR\n"
+                 "1) Scheduling Method (" +
+                 methods[alg.method] + (alg.method == 4 ? (" – time_quantum=" + to_string(alg.n)) : "") + ")\n"
+                                                                                                          "2) Preemptive Mode (" +
+                 pModes[alg.pMode] + ")\n"
+                                     "3) Show Result\n"
+                                     "4) End Program\n\n";
+
+    return str;
+}
+
+string programResultTemplate(Process *header, Algorithm a = alg)
+{
+    float sum = 0;
+    int size = 0;
+    float avWaitingTime;
+    string mode = "";
+
+    // Sort processes to show up in order
+    sortProcesses(&header, "pid");
+
+    if (a.method == 4)
+    {
+        mode = " - time_quantum=" + to_string(a.n);
+    }
+    else if (a.method == 2 || a.method == 3)
+    {
+        if (a.pMode)
+        {
+            mode = " - Preemptive";
+        }
+        else
+        {
+            mode = " - Non Preemptive";
+        }
+    }
+
+    string str = "Scheduling Method: " + methods[a.method] + mode + "\n"
+                                                                    "Process waiting times:\n";
+
+    while (header != nullptr)
+    {
+        str += "P" + to_string(header->pid) + ": " + to_string(header->wt) + " ms\n";
+        sum += header->wt;
+        size++;
+
+        header = header->next;
+    }
+
+    avWaitingTime = sum / size;
+
+    str += "Average Waiting Time: " + to_string(avWaitingTime) + " ms\n\n";
+
+    return str;
+}
